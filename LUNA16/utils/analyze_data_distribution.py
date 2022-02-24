@@ -4,6 +4,7 @@ from typing import Counter, List
 
 import numpy as np
 import SimpleITK as sitk
+import dask.array as da
 
 from .analyze_folders import File
 
@@ -29,7 +30,7 @@ def analyze_distribution_of_all_files(list_of_files: List[File]) -> np.array:
 
     for file in list_of_files:
         data = sitk.ReadImage(file.folder)
-        data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
+        data = da.from_delayed(np.array(sitk.GetArrayFromImage(data), dtype=np.float32))
     return data
 
 
