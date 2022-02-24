@@ -1,3 +1,4 @@
+from functools import lru_cache
 import time
 from typing import Counter, List
 
@@ -5,7 +6,7 @@ import numpy as np
 import SimpleITK as sitk
 from tqdm import tqdm
 
-
+@lru_cache(maxsize=100, typed=True)
 def analyze_shapes(list_of_files: List) -> np.array:
     """Returns a list of all file shapes
     
@@ -14,16 +15,18 @@ def analyze_shapes(list_of_files: List) -> np.array:
     
     Returns:
     - numpy array that describes the sizes and their counts"""
-    results = []
+    returns = []
     for file in list_of_files:
-        #print(file)
+        # Read each file
         data = sitk.ReadImage(file.folder)
-        shape = np.reshape(data, -1)
-        shape = shape.shape[0]
-        #results.append(shape)
-        del(data)
-    return shape
-    return Counter(results)
+        data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
+        # Ensure that all files have the same number of channels
+        returns.append(len(data.shape))
+        #data = np.reshape(data, -1)
+        #data = data.shape[0]
+        #results.append(data)
+    return returns
+
 
 
 
