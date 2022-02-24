@@ -1,10 +1,9 @@
-from collections import namedtuple
 from functools import lru_cache
 from typing import Counter, List
 
+import dask.array as da
 import numpy as np
 import SimpleITK as sitk
-import dask.array as da
 
 from .analyze_folders import File
 
@@ -17,7 +16,7 @@ def analyze_shapes(list_of_files: List[File]) -> int:
     - list_of_files: a Listof files with the MHD extension.
 
     Returns:
-    - Integer: Number of "slices" in each CT-scan.
+    - Integer: Number of "slices"/channels in each CT-scan File.
     """
     for file in list_of_files:
         data = sitk.ReadImage(file.folder)
@@ -25,13 +24,17 @@ def analyze_shapes(list_of_files: List[File]) -> int:
     return data.shape[0]
 
 
-def analyze_distribution_of_all_files(list_of_files: List[File]) -> np.array:
-    """Returns individual images"""
-
-    for file in list_of_files:
-        data = sitk.ReadImage(file.folder)
-        data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
-        data = da.from_array(data)
+def read_ct_as_dask(file: File) -> da.array:
+    """Returns individual images as a dask array.
+    
+    Arguments:
+    - a single File namedtuple
+    
+    Returns:
+    - a Dask array in the shape of C, H, W."""
+    data = sitk.ReadImage(file.folder)
+    data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
+    data = da.from_array(data)
     return data
 
 
