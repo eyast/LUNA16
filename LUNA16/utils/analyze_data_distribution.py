@@ -31,7 +31,7 @@ def analyze_distribution_of_all_files(list_of_files: List[File]) -> np.array:
     for file in list_of_files:
         data = sitk.ReadImage(file.folder)
         data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
-        data = da.from_delayed(data, **(data.shape), dtype=np.float32)
+        data = da.from_array(data)
     return data
 
 
