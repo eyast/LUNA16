@@ -5,28 +5,32 @@ from typing import Counter, List
 import numpy as np
 import SimpleITK as sitk
 
+from .analyze_folders import File
+
 
 @lru_cache(maxsize=100, typed=True)
-def analyze_shapes(list_of_files: List, type: int) -> int:
-    """Returns a list of all file shapes
+def analyze_shapes(list_of_files: List[File]) -> int:
+    """Returns a list of the 1st channel of each file
 
     Arguments:
     - list_of_files: a Listof files with the MHD extension.
 
     Returns:
-    - TBD
+    - Integer: Number of "slices" in each CT-scan.
     """
     for file in list_of_files:
-        File_analysis = namedtuple(
-            "File_analysis",
-            ["num_channels", "size", "ch1", "ch2", "ch3"])
-        # Read each file
         data = sitk.ReadImage(file.folder)
         data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
-        # Ensure that all files have the same number of channels
-        ops = [len(data.shape), data.size, data.shape[0], data.shape[1],
-            data.shape[2]]
-    return ops[type]
+    return data.shape[0]
+
+
+def analyze_distribution_of_all_files(list_of_files: List[File]) -> np.array:
+    """Returns individual images"""
+
+    for file in list_of_files:
+        data = sitk.ReadImage(file.folder)
+        data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
+    return data
 
 
 def analyze_data_distribution(list_of_files: List, bins: int = 100) -> np.array:
@@ -38,12 +42,13 @@ def analyze_data_distribution(list_of_files: List, bins: int = 100) -> np.array:
 
     Returns:
     - histogram: a numpy array representing a histogram."""
-    histogram: List = []
+    histogram: List[File] = []
     #list_of_files = [file.folder for file in list_of_files if file.extension == "mhd"]
     for file in list_of_files:
-        data = sitk.ReadImage(file.folder)
-        data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
-        data = np.reshape(data, -1)
+        data: sitk.Image = sitk.ReadImage(file.folder)
+        data: np.array = np.array(
+            sitk.GetArrayFromImage(data), dtype=np.float32)
+        data: np.array = np.reshape(data, -1)
         histogram.append(data)
     histogram = np.stack(histogram, axis=0)
     histogram = np.reshape(histogram, -1)
