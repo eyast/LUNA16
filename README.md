@@ -4,11 +4,15 @@ Lung cancer is the leading cause of cancer-related death worldwide. Screening hi
 
 The [LUNA 16 challenge](https://luna16.grand-challenge.org/) is an online challenge open to data-scientists in which participants build models that can detect nodules automatically on a dataset publicly available
 
+## Approach
+
 This tutorial will walk you through the typical workflow that you will be using to build a model for the LUNA 16 challenge.
 This is the first of several tutorials. While I have tried to make the whole process as simple as I can, I have decided to maintain the iterative approach that is inherent to data science.
 Data science is, by nature, very iterative.
 
-> This repository is by no mean perfect. Instead, I am trying to document my journey and learning. For example, you will see at the very beginning stages of my work that I rely on Python's `Multiprocessing` package to perform parallelism, but at a later stage transition to `Dask`. I have not attempted to fix my earlier work, but instead keep it as it is. This way, I hope I will be able to embed the logic that I have followed throughout the project.
+> This repository is not perfect by any means. Instead, I am trying to document my journey and learning. For example, you will see at the very beginning stages of my work that I rely on Python's `multiprocessing` package to perform parallelism, but at a later stage transition to `dask`. I have not attempted to fix my earlier work, but instead keep it as it is. This way, I hope I will be able to embed the logic that I have followed throughout the project.
+
+The approach that I take is to simply instructions as much as possible. Therefore, in many cases, I will be experimenting with new functions and ideas on a small scale (for example, a single file) before trying to find out how to automate this at a larger scale. I hope this can help you in your data science journey.
 
 ## Context and TOC
 
