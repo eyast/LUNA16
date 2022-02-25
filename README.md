@@ -1,5 +1,9 @@
 # The LUNA-16 Tutorial
 
+Lung cancer is the leading cause of cancer-related death worldwide. Screening high risk individuals for lung cancer with low-dose CT scans is now being implemented in the United States and other countries are expected to follow soon. In CT lung cancer screening, many millions of CT scans will have to be analyzed, which is an enormous burden for radiologists. Therefore there is a lot of interest to develop computer algorithms to optimize screening.
+
+The [LUNA 16 challenge](https://luna16.grand-challenge.org/) is an online challenge open to data-scientists in which participants build models that can detect nodules automatically on a dataset publicly available
+
 This tutorial will walk you through the typical workflow that you will be using to build a model for the LUNA 16 challenge.
 This is the first of several tutorials. While I have tried to make the whole process as simple as I can, I have decided to maintain the iterative approach that is inherent to data science.
 Data science is, by nature, very iterative. 
