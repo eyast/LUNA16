@@ -20,4 +20,9 @@ Broadly speaking, this tutorial will follow the iterative approach found in many
 4. Explore the metadata downloaded.
 5. Experiment with fitting different models to achieve the desired goal.
 
-The Jupyter notebooks provided in this repository are listed in the order you will face as a data scientist. Each file represents a single task, and I recommend you follow these notebooks in order.
+The Jupyter notebooks provided in this repository are listed in the order of the tasks you will probably perform as a data scientist. Each file represents a single task, and I recommend you follow these notebooks in order.
+
+## The LUNA16 package
+
+I have decided to create a package that includes utilities and several other functions that I am reusing throughout projects. You will therefore see references to custom utilities and functions that I have developed for this challenge, and I recommend you visit these utilities to understand their inner workings. This was also an experimentation for me to learn styling, typing, formatting and documenting of my code.
+
