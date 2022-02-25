@@ -2,6 +2,7 @@ import os
 from collections import namedtuple
 from typing import List
 
+
 File = namedtuple('File', ['filename', 'folder', 'extension', 'size'])
 
 
@@ -27,3 +28,4 @@ def analyze_folder(ROOT_FOLDER: str) -> List[File]:
             individual_file = File(f, fp, extension, size)
             all_files.append(individual_file)
     return all_files
+

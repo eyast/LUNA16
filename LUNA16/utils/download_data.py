@@ -55,6 +55,8 @@ parser = argparse.ArgumentParser(description="Downloads the LUNA16 data \
 parser.add_argument("--d", action="store_true", 
                     default="/home/azureuser/cloudfiles/data/LUNA16")
 
+args = parser.parse_args()
+ROOT_FOLDER = args.d
 
 def make_folders() -> None:
     """Creates the necessary FOLDERS to host the LUNA files"""
@@ -97,7 +99,7 @@ def retrieve_filename(url: str) -> str:
         - filename: string that represents the name of the file in the URI
     """
     filename: str = url.split("/")[-1]
-    filename: str = filename.split("?")[0]
+    filename = filename.split("?")[0]
     return filename
 
 
@@ -118,9 +120,9 @@ def download_file(url: str) -> str:
     return path_name
 
 
-def download_and_unzip_file(url: str) -> None:
+def download_and_unzip_file(url: str) -> str:
     """Combines download() and unzip(). Used to enable multiprocessing"""
-    path_name = download_file(url)
+    path_name: str = download_file(url)
     unzip(path_name)
     os.remove(path_name)
     return path_name
@@ -136,8 +138,8 @@ def write_folder_location_to_disk() -> None:
 
 def run() -> None:
     """Runs in the main section"""
-    args = parser.parse_args()
-    global ROOT_FOLDER
+
+    #global ROOT_FOLDER
     ROOT_FOLDER: str = args.d
     start = time()
     make_folders()

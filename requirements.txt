@@ -1,1 +1,3 @@
-"dask[complete]" 
+dask[complete]
+types-requests
+graphviz

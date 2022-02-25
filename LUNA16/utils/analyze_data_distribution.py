@@ -1,11 +1,23 @@
 from functools import lru_cache
 from typing import Counter, List
+import numpy.typing as npt
 
+import dask
 import dask.array as da
 import numpy as np
 import SimpleITK as sitk
 
 from .analyze_folders import File
+
+def read_mhd(file: File) -> npt.NDArray:
+    """ Reads an MHD file, and returns a numpy array"""
+    assert isinstance(file, File)
+    assert file.extension == "mhd"
+    data: sitk.Image = sitk.ReadImage(file.folder)
+    data_array: npt.NDArray = np.array(
+        sitk.GetArrayFromImage(data),
+        dtype=np.float32)
+    return data_array
 
 
 @lru_cache(maxsize=100, typed=True)
@@ -19,26 +31,27 @@ def analyze_shapes(list_of_files: List[File]) -> int:
     - Integer: Number of "slices"/channels in each CT-scan File.
     """
     for file in list_of_files:
+        assert file.extension == "mhd"
         data = sitk.ReadImage(file.folder)
-        data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
-    return data.shape[0]
+        data_array: npt.NDArray = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
+    return data_array.shape[0]
 
 
-def read_ct_as_dask(file: File) -> da.array:
-    """Returns individual images as a dask array.
+def read_ct_as_dask(file: File) -> npt.NDArray:
+    """Returns individual CT scan as a numpy array.
     
     Arguments:
-    - a single File namedtuple
+    - a single File namedtuple - MHD file
     
     Returns:
-    - a Dask array in the shape of C, H, W."""
-    data = sitk.ReadImage(file.folder)
-    data = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
-    data = da.from_array(data)
-    return data
+    - a numpy array in the shape of C, H, W."""
+    assert file.extension == "mhd"
+    data: sitk.Image = sitk.ReadImage(file.folder)
+    data_array: npt.NDArray = np.array(sitk.GetArrayFromImage(data), dtype=np.float32)
+    return data_array
 
 
-def analyze_data_distribution(list_of_files: List, bins: int = 100) -> np.array:
+def analyze_data_distribution(list_of_files: List, bins: int = 100) -> npt.NDArray:
     """Performs analysis of the distribution of data.
 
     Arguments:
@@ -47,18 +60,18 @@ def analyze_data_distribution(list_of_files: List, bins: int = 100) -> np.array:
 
     Returns:
     - histogram: a numpy array representing a histogram."""
-    histogram: List[File] = []
-    #list_of_files = [file.folder for file in list_of_files if file.extension == "mhd"]
+    histogram: List[npt.NDArray] = []
     for file in list_of_files:
+        assert file.extension == "mhd"
         data: sitk.Image = sitk.ReadImage(file.folder)
-        data: np.array = np.array(
+        data_array: npt.NDArray = np.array(
             sitk.GetArrayFromImage(data), dtype=np.float32)
-        data: np.array = np.reshape(data, -1)
-        histogram.append(data)
-    histogram = np.stack(histogram, axis=0)
-    histogram = np.reshape(histogram, -1)
-    histogram = np.histogram(histogram, bins=bins)
-    return histogram
+        data_array = np.reshape(data, -1)
+        histogram.append(data_array)
+    histogram_array: npt.NDArray = np.stack(histogram, axis=0)
+    histogram_array = np.reshape(histogram_array, -1)
+    histogram_array = np.histogram(histogram_array, bins=bins)
+    return histogram_array
 
 
 def find_nans(list_of_files: List) -> Counter:
