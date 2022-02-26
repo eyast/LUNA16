@@ -7,6 +7,7 @@ if running as part of a pipeline, call download_data.run()
 """
 
 import argparse
+from ctypes import Union
 import json
 import logging
 import os
@@ -19,7 +20,6 @@ from zipfile import ZipFile
 import requests
 
 THREAD_MULTIPLIER = 2
-#ROOT_FOLDER: str = "/data"
 FOLDERS: List = ["download", "extracted"]
 URLS: List = [
     "https://zenodo.org/record/3723295/files/annotations.csv?download=1",
@@ -58,18 +58,43 @@ parser.add_argument("--d", action="store_true",
 args = parser.parse_args()
 ROOT_FOLDER = args.d
 
-def make_folders() -> None:
+
+def _make_1_folder(folder=None) -> None:
+    """Tries to create a single folder
+    
+    Arguments:
+    - folder: str = named folder"""
+    assert isinstance(folder, str)
+    try:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        else:
+            logging.warning(f"{folder} folder already exists.")
+    except:
+        logging.warning(f"Could not create {folder}.")
+
+
+def _check_file_extension(filename: str,
+                extension: str) -> bool:
+    """Checks whether a File has a specific extension
+    
+    Arguments:
+    - filename: str = name of the file
+    - extension: str = the extension to validate
+    """
+    assert isinstance(filename, str) and isinstance(extension, str)
+    assert len(extension) > 0 and len(filename) > 0
+    displacement: int = len(extension)
+    if filename[-displacement:].lower() == extension.lower():
+        return True
+    else: return False
+
+def make_folders(root_folder: List[str]=ROOT_FOLDER,
+                folder_list: List[str]=FOLDERS) -> None:
     """Creates the necessary FOLDERS to host the LUNA files"""
-    if not os.path.exists(ROOT_FOLDER):
-        os.makedirs(ROOT_FOLDER)
-    for folder in FOLDERS:
-        try:
-            if not os.path.exists(os.path.join(ROOT_FOLDER, folder)):
-                os.makedirs(os.path.join(ROOT_FOLDER, folder))
-            else:
-                logging.info(f"{folder} folder already exists.")
-        except:
-            logging.warning(f"Could not create the {folder} folder.")
+    _make_1_folder(root_folder)
+    for folder in folder_list:
+        _make_1_folder(os.path.join(root_folder, folder))
 
 
 def unzip(path_name: str) -> None:
@@ -78,8 +103,7 @@ def unzip(path_name: str) -> None:
     Arguments:
         -path_name: str = the path of a ZIP file
     """
-    if path_name[-3:].lower() != "zip":
-        #logging.info(f"{path_name} is not a ZIP file, exiting.")
+    if not _check_file_extension(path_name, "zip"):
         return
     try:
         with ZipFile(path_name) as z:
@@ -90,7 +114,7 @@ def unzip(path_name: str) -> None:
         logging.error(f"Could not extract the file {path_name}")
 
 
-def retrieve_filename(url: str) -> str:
+def _retrieve_filename(url: str) -> str:
     """Extracts the filename from a URL. Should not be called directly.
 
     Arguments:
@@ -110,7 +134,7 @@ def download_file(url: str) -> str:
     Arguments:
     - url: str = the URL of a file to download
     """
-    file_name: str = retrieve_filename(url)
+    file_name: str = _retrieve_filename(url)
     path_name: str = os.path.join(ROOT_FOLDER, FOLDERS[0], file_name)
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
@@ -132,7 +156,7 @@ def write_folder_location_to_disk() -> None:
     """Writes the value of ROOT_FOLDER to a python dictionary called
     ROOT_FOLDER"""
     root_folder_location = {"ROOT_FOLDER" : ROOT_FOLDER}
-    with open('ROOT_FOLDER', 'w') as settings_file: 
+    with open('ROOT_FOLDER.py', 'w') as settings_file: 
         settings_file.write(json.dumps(root_folder_location))
 
 

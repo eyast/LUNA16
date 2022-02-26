@@ -6,9 +6,9 @@ The [LUNA 16 challenge](https://luna16.grand-challenge.org/) is an online challe
 
 ## Approach
 
-This tutorial will walk you through the typical workflow that you will be using to build a model for the LUNA 16 challenge.
+This tutorial will walk you through the typical workflow that you will be using to build a model for the LUNA 16 challenge. Think of this tutorial as a way for you to follow along a data science challenge: instead of observing the final result, you are being presented with logical steps to take, each in its own Jupyter notebook - some related to organizing our files, others to explore, and some to model.
+
 This is the first of several tutorials. While I have tried to make the whole process as simple as I can, I have decided to maintain the iterative approach that is inherent to data science.
-Data science is, by nature, very iterative.
 
 > This repository is not perfect by any means. Instead, I am trying to document my journey and learning. For example, you will see at the very beginning stages of my work that I rely on Python's `multiprocessing` package to perform parallelism, but at a later stage transition to `dask`. I have not attempted to fix my earlier work, but instead keep it as it is. This way, I hope I will be able to embed the logic that I have followed throughout the project.
 
