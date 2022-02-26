@@ -138,8 +138,6 @@ def write_folder_location_to_disk() -> None:
 
 def run() -> None:
     """Runs in the main section"""
-
-    #global ROOT_FOLDER
     ROOT_FOLDER: str = args.d
     start = time()
     make_folders()
@@ -150,7 +148,7 @@ def run() -> None:
     for r in results:
         logging.info(
             f"Done: {(r.split('/'))[-1]} \t\
-                - Time: {round((time() - start ) /60, 3)} s.")
+                - Time: {round((time() - start ) /60, 3)} m.")
     write_folder_location_to_disk()
     os.removedirs(os.path.join(ROOT_FOLDER, FOLDERS[0]))
                 
