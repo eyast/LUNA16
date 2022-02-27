@@ -52,8 +52,8 @@ logging.getLogger().addHandler(console)
 
 parser = argparse.ArgumentParser(description="Downloads the LUNA16 data \
                     and stores it locally.")
-parser.add_argument("--d", action="store_true", 
-                    default="/home/azureuser/cloudfiles/data/LUNA16")
+parser.add_argument("--d", action="store_true")#, 
+                    #default="/home/azureuser/cloudfiles/data/LUNA16")
 
 args = parser.parse_args()
 ROOT_FOLDER = args.d
