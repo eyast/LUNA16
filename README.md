@@ -17,7 +17,7 @@ My purpose is not to show you a working model, nor is it to hide away from you t
 
 ## Approach
 
-This tutorial will walk you through the typical workflow that you will be using to build a model for the LUNA 16 challenge. Think of this tutorial as a way for you to follow along a data science challenge: instead of observing the final result, you are being presented with logical steps to take, each in its own Jupyter notebook - some related to organizing our files, others to explore, and some to model. I've done my very best to order these notebooks in a logical form, but the iterative approach sometimes prevented me from doing so.
+This tutorial will walk you through the typical workflow that you will be using to build a model for the LUNA 16 challenge, or at least the one i have followed - I then decided to document my journey as a tutorial. Think of it as a way for you to follow along a data science challenge: instead of observing the final result, you are being presented with logical steps to take, each in its own Jupyter notebook, each building a little bit on top of the previous ones, but some leading no where: some ideas turn out to be either incorrect, or non-beneficial. In the spirit of traceability, I have opted to keep all the notebooks that were non conclusive to our task.
 
 This is the first of several tutorials. While I have tried to make the whole process as simple as I can, I have decided to maintain the iterative approach that is inherent to data science.
 
