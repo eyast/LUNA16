@@ -172,7 +172,7 @@ def run() -> None:
     for r in results:
         logging.info(
             f"Done: {(r.split('/'))[-1]} \t\
-                - Time: {round((time() - start ) /60, 3)} m.")
+                - Time: {round((time() - start ) /60, 2)} m.")
     write_folder_location_to_disk()
     os.removedirs(os.path.join(ROOT_FOLDER, FOLDERS[0]))
                 
