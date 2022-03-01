@@ -20,7 +20,6 @@ def read_mhd(file: File) -> npt.NDArray:
     return data_array
 
 
-@lru_cache(maxsize=100, typed=True)
 def analyze_shapes(list_of_files: List[File]) -> int:
     """Returns a list of the 1st channel of each file
 
