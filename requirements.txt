@@ -1,3 +1,7 @@
 dask[complete]
 types-requests
 graphviz
+bqplot
+ipyleaflet
+pywwt
+ipyvolume

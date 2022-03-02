@@ -1,5 +1,5 @@
 from functools import lru_cache
-from typing import Counter, List
+from typing import Counter, List, Union
 import numpy.typing as npt
 
 import dask
@@ -18,6 +18,28 @@ def read_mhd(file: File) -> npt.NDArray:
         sitk.GetArrayFromImage(data),
         dtype=np.float32)
     return data_array
+
+
+def read_mhd_and_metadata(file: File) -> Union[npt.NDArray, None, None]:
+    """ Reads an MHD file, and returns a numpy array and metadata.
+    
+    Arguments:
+    - A file object
+
+    Returns:
+    - Array
+    - Spacing information
+    - Origin information
+    """
+    assert isinstance(file, File)
+    assert file.extension == "mhd"
+    data: sitk.Image = sitk.ReadImage(file.folder)
+    data_array: npt.NDArray = np.array(
+        sitk.GetArrayFromImage(data),
+        dtype=np.float32)
+    spacing = data.GetSpacing()
+    origin = data.GetOrigin()
+    return (data_array, spacing, origin)
 
 
 def analyze_shapes(list_of_files: List[File]) -> int:
